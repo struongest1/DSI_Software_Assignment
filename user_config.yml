@@ -1,12 +1,14 @@
 ntfy_topic: dsi_c2_brs
 
+data: https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
+
 
 plot_config:
   title: Forest Cover Through TIme
   xlabel: Time
   ylabel: Forest Cover 
   Plot color: blue
-  Figure_size:1
+  Figure_size: 1
 
 
 savepath: loacl

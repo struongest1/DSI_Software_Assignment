@@ -6,10 +6,35 @@ import os
 import requests
 
 
-logging.basicConfig(
-    handlers=(logging.StreamHandler(), logging.FileHandler('uci_iris.log')), 
-    level=logging.INFO,
-    )
+
+class ConfigLoader:
+    def __init__(self, config_file_path):
+        self.config_file_path = config_file_path
+        self.config = None
+    
+    def load_config(self):
+        try:
+            with open(self.config_file_path, 'r') as file:
+                self.config = yaml.safe_load(file)
+            configtable = {}
+            configtable.update(self.config)
+            # print (self.config)
+        except FileNotFoundError:
+            print(f"Error: Config file '{self.config_file_path}' not found.")
+        except yaml.YAMLError as e:
+            print(f"Error: Failed to load config file. {e}")
+            
+config1 = ConfigLoader('secrets.yml')
+configfilefile = config1.load_config()
+
+
+
+
+
+# logging.basicConfig(
+#     handlers=(logging.StreamHandler(), logging.FileHandler('uci_iris.log')), 
+#     level=logging.INFO,
+#     )
 # dataset_url = 'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv'
 # iris_data = pd.read_csv(dataset_url)
 # logging.info(f'Successfully loaded {dataset_url}')
@@ -53,6 +78,29 @@ The configuration files should include parameters for:
     * Default save path
 
 '''
+import yaml 
+
+class Analysis:
+    def __init__(self, config_file_path):
+        self.config_file_path = config_file_path
+        self.config = None
+    
+    def analysis_obj(self):
+        try:
+            with open(self.config_file_path, 'r') as file:
+                self.config = yaml.safe_load(file)
+            configtable = {}
+            configtable.update(self.config)
+            # print (self.config)
+        except FileNotFoundError:
+            print(f"Error: Config file '{self.config_file_path}' not found.")
+        except yaml.YAMLError as e:
+            print(f"Error: Failed to load config file. {e}")
+            
+config1 = ConfigLoader('secrets.yml')
+configfilefile = config1.load_config()
+
+
 
 
 def load_data()
