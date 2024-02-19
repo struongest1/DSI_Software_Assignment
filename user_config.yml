@@ -1,14 +1,19 @@
-ntfy_topic: dsi_c2_brs
+ntfy:
+  url: https://ntfy.sh/dsi_c2_brs
+  title: DSI Software Assignment Complete
+  message: Analysis complete - Jimmy
 
 data: https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
 
 
 plot_config:
-  title: Forest Cover Through TIme
-  xlabel: Time
-  ylabel: Forest Cover 
-  Plot color: blue
-  Figure_size: 1
+  title: Forest Cover 2021
+  xlabel: Countries
+  ylabel: Forest Cover (km2) 
+  bar_colour: green
+  Font_size: 10
+  xvar: Country Name
+  yvar: 2021
 
 
 savepath: loacl
