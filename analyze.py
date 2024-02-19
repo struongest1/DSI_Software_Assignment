@@ -4,6 +4,8 @@ import argparse
 import yaml
 import os
 import requests
+import matplotlib.pyplot as plt
+import requests
 
 
 
@@ -14,12 +16,11 @@ logging.basicConfig(
 
 
 
-
 # class yourteamrepo.Analysis.Analysis(analysis_config:str)
 class Analysis:
 ''' Load config file into an Analysis object
 
-Load system-wide configuration from `configs/system_config.yml`, user configuration from
+Load system-wide configuration from `config.yml`, user configuration from
 `configs/user_config.yml`, and the specified analysis configuration file
 
 Parameters
@@ -52,9 +53,9 @@ The configuration files should include parameters for:
         try:
             with open(self.config_file_path, 'r') as file:
                 self.config = yaml.safe_load(file)
-            configtable = {}
-            configtable.update(self.config)
-            logging.info(f'Successfully loaded {self.config}')
+        #     configtable = {}
+        #     configtable.update(self.config)
+        #     logging.info(f'Successfully loaded {self.config}')
         except FileNotFoundError:
             print(f"Error: Config file '{self.config_file_path}' not found.")
             logging.error(f"Error: Config file '{self.config_file_path}' not found.")
@@ -62,30 +63,37 @@ The configuration files should include parameters for:
             print(f"Error: Failed to load config file. {e}")
             logging.error(f"Error: Failed to load config file. {e}")
         assert type(self.config_file_path) == str, f"Path, {self.config_file_path} must be a string"
-            
-config1 = Analysis('secrets.yml')
+        return self.config    
+config1 = Analysis('user_config.yml')
 configfile = config1.analysis_obj()
 
 
 
+''' 
+Retrieve data from github using config file
 
-def load_data()
-''' Retrieve data from the GitHub API
+Parameters:
+link to csv file from config file
 
-This function makes an HTTPS request to the GitHub API and retrieves your selected data. The data is
-stored in the Analysis object.
 
-Parameters
-----------
-None
-
-Returns
--------
-None
-
+Returns:
+pandas dataframe of csv file from github
 '''
+dataset_url = configfile['data']
 
-compute_analysis() -> Any
+try:
+    dataset = pd.read_csv(dataset_url)
+    logging.info(f'Successfully loaded {dataset_url}')
+except Exception as e:
+    logging.error('Error loading dataset', exc_info=e)
+    raise e
+
+
+load_data(configfile['data'])
+
+
+
+#compute_analysis() -> Any
 '''Analyze previously-loaded data.
 
 This function runs an analytical measure of your choice (mean, median, linear regression, etc...)
@@ -100,12 +108,10 @@ Returns
 analysis_output : Any
 
 '''
-def profile (x)
-    mean = x.mean()
-    mediam = x.median()
-    return 
 
-def notify_done(message: str) -> None
+
+#send notification for completed analysis
+def notify_done(message: str) -> None:
 ''' Notify the user that analysis is complete.
 
 Send a notification to the user through the ntfy.sh webpush service.
@@ -120,8 +126,16 @@ Returns
 None
 
 '''
+    requests.post(
+    configfile['ntfy']['url'],
+    data=message.encode('utf-8'),
+    headers={'Title': configfile['ntfy']['title']})
+    
+
+notify_done('Jimmy Assignment Complete')
 
 
+#Plot data analysis
 plot_data(save_path:Optional[str] = None) -> matplotlib.Figure
 ''' Analyze and plot data
 
@@ -138,6 +152,4 @@ Returns
 fig : matplotlib.Figure
 
 '''
-
-
 
