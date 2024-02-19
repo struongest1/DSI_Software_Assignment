@@ -1,0 +1,16 @@
+INFO:root:Successfully loaded {'GHkey': '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', 'Kaggle': {'User': 'jimbot1', 'Token': '18d54fc683ee04140b9f943953f73f55'}}
+INFO:root:Successfully loaded {'ntfy_topic': 'dsi_c2_brs', 'data': 'https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv', 'plot_config': {'title': 'Forest Cover Through TIme', 'xlabel': 'Time', 'ylabel': 'Forest Cover', 'Plot color': 'blue', 'Figure_size': 1}, 'savepath': 'loacl'}
+INFO:root:Successfully loaded https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
+INFO:root:Successfully loaded https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
+INFO:root:Successfully loaded https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
+INFO:root:Successfully loaded https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
+INFO:root:Successfully loaded https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
+INFO:root:Successfully loaded https://raw.githubusercontent.com/struongest1/DSI_Software_Assignment/main/forest_area_km.csv
+ERROR:root:Error: Failed to load config file. mapping values are not allowed here
+  in "user_config.yml", line 2, column 4
+ERROR:root:Error: Failed to load config file. mapping values are not allowed here
+  in "user_config.yml", line 2, column 4
+ERROR:root:Error: Failed to load config file. mapping values are not allowed here
+  in "user_config.yml", line 2, column 4
+ERROR:root:Error: Failed to load config file. mapping values are not allowed here
+  in "user_config.yml", line 2, column 6
