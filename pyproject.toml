@@ -5,11 +5,11 @@ build-backend = "hatchling.build"
 [project]
 name = "analyze"
 authors = [
-    {name = "Jimmy Truong", email = "simeon.wong@mail.utoronto.ca"},
+    {name = "Jimmy Truong", email = "jw.truong@mail.utoronto.ca"},
 ]
 description = "A very basic Python package"
-version = "0.1.0"
-dependencies = ["matplotlib", "numpy"]
+version = "1.0.0"
+dependencies = ["matplotlib", "numpy", "pandas", "requests"]
 requires-python = ">=3.10.0"
 readme = "README.md"
 classifiers = [
@@ -17,4 +17,4 @@ classifiers = [
 ]
 
 [project.scripts]
-my_hello_world = "mymodule:hello_world"
+notify_done = "anayze:notify_done"
