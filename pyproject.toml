@@ -17,4 +17,4 @@ classifiers = [
 ]
 
 [project.scripts]
-notify_done = "anayze:notify_done"
+notify_done = "analyze:notify_done"

@@ -16,7 +16,7 @@ logging.basicConfig(
     )
 
 # class yourteamrepo.Analysis.Analysis(analysis_config:str)
-class Analysis:
+class Analysis():
 
     '''Load config file into an Analysis object
 
@@ -47,8 +47,6 @@ class Analysis:
     def __init__(self, config_file_path):
         self.config_file_path = config_file_path
         self.config = None
-    
-    def analysis_obj(self):
         try:
             with open(self.config_file_path, 'r') as file:
                 self.config = yaml.safe_load(file)
@@ -62,86 +60,77 @@ class Analysis:
             print(f"Error: Failed to load config file. {e}")
             logging.error(f"Error: Failed to load config file. {e}")
         assert type(self.config_file_path) == str, f"Path, {self.config_file_path} must be a string"
-        return self.config    
-config1 = Analysis('user_config.yml')
-configfile = config1.analysis_obj()
+         
+    
+    def load_data (self):
+        ''' 
+        I downloaded the data from Kaggle using the API then saved the 
+        file on github for the rest of the analysis Retrieve data from github using config file
+        Parameters:
+        link to csv file from config file
+        Returns:
+        pandas dataframe of csv file from github
+        '''
+        dataset_url = self.config['data']
+        try:
+            self.dataset = pd.read_csv(dataset_url)
+            logging.info(f'Successfully loaded {dataset_url}')
+        except Exception as e:
+            logging.error('Error loading dataset', exc_info=e)
+            raise e    
+        
+    def compute_analysis(self):
+        # Get a list of the 10 counties with the leaast amount of forest cover
+        '''
+        This function either selects the bottom 10 forest cover trees
+        Parameters
+        None
+
+        Returns
+        analysis_output : df ''' 
+        self.result = self.dataset.sort_values('2021', ascending=True).head(10)
+        return self.result
+       
+
+    def notify_done(self, message: str) -> None:
+        ''' Notify the user that analysis is complete.
+        Send a notification to the user through the ntfy.sh webpush service.
+        Parameters
+        ----------
+        Message : str
+        Text of the notification to send
+
+        Returns
+        -------
+        None
+        '''
+        requests.post(
+        self.config['ntfy']['url'],
+        data=message.encode('utf-8'),
+        headers={'Title': self.config['ntfy']['title']})
 
 
+    def plot_data(self):
+        ''' Analyze and plot data
 
-''' 
-Retrieve data from github using config file
-Parameters:
-link to csv file from config file
-Returns:
-pandas dataframe of csv file from github
-'''
-dataset_url = configfile['data']
+        Generates a plot, display it to screen
+        Parameters
+        ----------
+        Returns
+        -------
+        fig : matplotlib.Figure
 
-try:
-    dataset = pd.read_csv(dataset_url)
-    logging.info(f'Successfully loaded {dataset_url}')
-except Exception as e:
-    logging.error('Error loading dataset', exc_info=e)
-    raise e
-
-
-#compute_analysis() -> Any
-
-
-'''Analyze previously-loaded data.'''
-# Get a list of the 10 counties with the leaast amount of forest cover
-top10= dataset.sort_values('2021', ascending=True).head(10)
-
-
-
-
-#send notification for completed analysis
-def notify_done(message: str) -> None:
-    ''' Notify the user that analysis is complete.
-
-    Send a notification to the user through the ntfy.sh webpush service.
-
-    Parameters
-    ----------
-    message : str
-    Text of the notification to send
-
-    Returns
-    -------
-    None
-
-    '''
-    requests.post(
-    configfile['ntfy']['url'],
-    data=message.encode('utf-8'),
-    headers={'Title': configfile['ntfy']['title']})
+        '''
+        bar_fig, bar_ax = plt.subplots()
+        bar_ax.barh(self.result[self.config['plot_config']['xvar']], self.result['2021'], color="red")
+        bar_ax.set_title(self.config['plot_config']['title'], fontsize='12')
+        bar_ax.set_xlabel(self.config['plot_config']['ylabel'], fontsize=self.config['plot_config']['Font_size'])
+        bar_ax.set_ylabel(self.config['plot_config']['xlabel'], fontsize=self.config['plot_config']['Font_size'])
+        return
     
 
-notify_done('Jimmy Assignment Complete')
 
 
-#Plot data analysis
-#plot_data(save_path:Optional[str] = None) -> matplotlib.Figure
-''' Analyze and plot data
 
-Generates a plot, display it to screen, and save it to the path in the parameter `save_path`, or 
-the path from the configuration file if not specified.
 
-Parameters
-----------
-save_path : str, optional
-    Save path for the generated figure
-Returns
--------
-fig : matplotlib.Figure
-'''
 
-bar_fig, bar_ax = plt.subplots()
-bar_ax.barh(top10[configfile['plot_config']['xvar']], top10['2021'], color="red")
-bar_ax.xaxis.set_major_formatter(tick.StrMethodFormatter('{x:,.0f}'))
-bar_ax.set_axisbelow(True)
-bar_ax.grid(alpha=0.3)
-bar_ax.set_title(configfile['plot_config']['title'], fontsize='12')
-bar_ax.set_xlabel(configfile['plot_config']['ylabel'], fontsize=configfile['plot_config']['Font_size'])
-bar_ax.set_ylabel(configfile['plot_config']['xlabel'], fontsize=configfile['plot_config']['Font_size'])
-bar_fig.savefig('forest.png')

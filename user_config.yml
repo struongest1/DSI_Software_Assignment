@@ -16,4 +16,4 @@ plot_config:
   yvar: 2021
 
 
-savepath: loacl
+savepath: /analyse
